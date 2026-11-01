@@ -52,6 +52,7 @@ notification.mp3
 /cache
 trace.json
 /sysinfo-????-??-??-??-??.json
+/benchmark-*.txt
 /test/results.xml
 coverage.xml
 **/tests/**/expectations
