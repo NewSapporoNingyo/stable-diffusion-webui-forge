@@ -332,12 +332,21 @@ def requirements_met(requirements_file):
     """
 
     import importlib.metadata
+    import packaging.markers
     import packaging.version
 
     with open(requirements_file, "r", encoding="utf8") as file:
         for line in file:
             if line.strip() == "":
                 continue
+
+            line, separator, marker = line.partition(";")
+            if separator:
+                try:
+                    if not packaging.markers.Marker(marker.strip()).evaluate():
+                        continue
+                except (packaging.markers.InvalidMarker, packaging.markers.UndefinedComparison, packaging.markers.UndefinedEnvironmentName):
+                    return False
 
             m = re.match(re_requirement, line)
             if m is None:

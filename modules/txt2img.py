@@ -9,7 +9,7 @@ import modules.shared as shared
 from modules.ui import plaintext_to_html
 from PIL import Image
 import gradio as gr
-from modules_forge import main_thread
+from modules_forge import generation_notification, main_thread
 
 
 def txt2img_create_processing(id_task: str, request: gr.Request, prompt: str, negative_prompt: str, prompt_styles, n_iter: int, batch_size: int, cfg_scale: float, distilled_cfg_scale: float, height: int, width: int, enable_hr: bool, denoising_strength: float, hr_scale: float, hr_upscaler: str, hr_second_pass_steps: int, hr_resize_x: int, hr_resize_y: int, hr_checkpoint_name: str, hr_additional_modules: list, hr_sampler_name: str, hr_scheduler: str, hr_prompt: str, hr_negative_prompt, hr_cfg: float, hr_distilled_cfg: float, override_settings_texts, *args, force_enable_hr=False):
@@ -118,7 +118,9 @@ def txt2img_upscale_function(id_task: str, request: gr.Request, gallery, gallery
     else:
         geninfo["infotexts"][gallery_index] = processed.info
 
-    return new_gallery, json.dumps(geninfo), plaintext_to_html(processed.info), plaintext_to_html(processed.comments, classname="comments")
+    result = new_gallery, json.dumps(geninfo), plaintext_to_html(processed.info), plaintext_to_html(processed.comments, classname="comments")
+    generation_notification.notify_generation_finished()
+    return result
 
 
 def txt2img_function(id_task: str, request: gr.Request, *args):
@@ -139,7 +141,9 @@ def txt2img_function(id_task: str, request: gr.Request, *args):
     if opts.do_not_show_images:
         processed.images = []
 
-    return processed.images + processed.extra_images, generation_info_js, plaintext_to_html(processed.info), plaintext_to_html(processed.comments, classname="comments")
+    result = processed.images + processed.extra_images, generation_info_js, plaintext_to_html(processed.info), plaintext_to_html(processed.comments, classname="comments")
+    generation_notification.notify_generation_finished()
+    return result
 
 
 def txt2img_upscale(id_task: str, request: gr.Request, gallery, gallery_index, generation_info, *args):

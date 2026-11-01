@@ -1,4 +1,7 @@
 def register(options_templates, options_section, OptionInfo):
+    options_templates.update(options_section(('saving-images', "Saving images/grids", "saving"), {
+        "notification_toast": OptionInfo(True, "Show a Windows system notification after image generation").info("Windows only; independent of the notification sound setting"),
+    }))
     options_templates.update(options_section((None, "Forge Hidden options"), {
         "forge_unet_storage_dtype": OptionInfo('Automatic'),
         "forge_inference_memory": OptionInfo(1024),
