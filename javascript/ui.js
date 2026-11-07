@@ -298,6 +298,44 @@ function confirm_clear_prompt(prompt, negative_prompt) {
 }
 
 
+function confirmInterrogate(modelName, buttonId) {
+    const app = gradioApp();
+    const dialogId = "img2img_interrogate_confirmation";
+    if (app.getElementById(dialogId)) return;
+
+    const dialog = document.createElement("dialog");
+    dialog.id = dialogId;
+    dialog.lang = "zh-CN";
+    dialog.setAttribute("aria-labelledby", "img2img_interrogate_title");
+    dialog.setAttribute("aria-describedby", "img2img_interrogate_warning");
+    dialog.innerHTML = `
+        <h2 id="img2img_interrogate_title"></h2>
+        <p id="img2img_interrogate_warning">如果缺少模型权重，Forge 将联网下载。</p>
+        <form method="dialog">
+            <button type="submit" class="custom-button" value="cancel" autofocus>取消</button>
+            <button type="submit" class="custom-button" value="confirm">确定</button>
+        </form>
+    `;
+    dialog.querySelector("h2").textContent = `运行 ${modelName}？`;
+
+    dialog.addEventListener("keydown", event => {
+        event.stopPropagation();
+        if (event.key === "Enter" && (event.ctrlKey || event.metaKey || event.altKey)) {
+            event.preventDefault();
+        }
+    });
+    dialog.addEventListener("close", () => {
+        dialog.remove();
+        if (dialog.returnValue === "confirm") {
+            app.getElementById(buttonId)?.click();
+        }
+    }, {once: true});
+
+    app.querySelector(".gradio-container").appendChild(dialog);
+    dialog.showModal();
+}
+
+
 var opts = {};
 onAfterUiUpdate(function() {
     if (Object.keys(opts).length != 0) return;

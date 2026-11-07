@@ -870,14 +870,29 @@ def create_ui():
                 show_progress=False,
             )
 
-            toprow.button_interrogate.click(
+            interrogate_clip_run = gr.Button(visible=False, elem_id="img2img_interrogate_clip_run")
+            interrogate_deepbooru_run = gr.Button(visible=False, elem_id="img2img_interrogate_deepbooru_run")
+
+            interrogate_clip_run.click(
                 fn=lambda *args: process_interrogate(interrogate, *args),
                 **interrogate_args,
             )
 
-            toprow.button_deepbooru.click(
+            interrogate_deepbooru_run.click(
                 fn=lambda *args: process_interrogate(interrogate_deepbooru, *args),
                 **interrogate_args,
+            )
+
+            toprow.button_interrogate.click(
+                fn=None,
+                _js=f'() => confirmInterrogate("Interrogate CLIP", "{interrogate_clip_run.elem_id}")',
+                queue=False,
+            )
+
+            toprow.button_deepbooru.click(
+                fn=None,
+                _js=f'() => confirmInterrogate("Interrogate DeepBooru", "{interrogate_deepbooru_run.elem_id}")',
+                queue=False,
             )
 
             steps = scripts.scripts_img2img.script('Sampler').steps

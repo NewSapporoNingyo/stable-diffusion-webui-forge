@@ -340,6 +340,40 @@ input[type="checkbox"].input-accordion-checkbox{
     flex: 1;
 }
 
+#img2img_interrogate_confirmation {
+    box-sizing: border-box;
+    max-width: min(28rem, calc(100% - 2rem));
+    margin: auto;
+    padding: 1.25rem;
+    border: 1px solid var(--border-color-primary);
+    border-radius: var(--radius-lg);
+    background: var(--body-background-fill);
+    color: var(--body-text-color);
+}
+#img2img_interrogate_confirmation::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+#img2img_interrogate_confirmation h2 {
+    margin: 0 0 0.5rem;
+    font-size: var(--text-lg);
+    font-weight: 600;
+}
+#img2img_interrogate_confirmation form {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+#img2img_interrogate_confirmation button[value="confirm"] {
+    border-color: var(--button-primary-border-color);
+    background: var(--button-primary-background-fill);
+    color: var(--button-primary-text-color);
+}
+#img2img_interrogate_confirmation button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
 .generate-box{
     position: relative;
 }
