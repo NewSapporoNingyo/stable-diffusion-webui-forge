@@ -551,6 +551,10 @@ def create_ui():
     with gr.Blocks(analytics_enabled=False, head=canvas_head) as img2img_interface:
         toprow = ui_toprow.Toprow(is_img2img=True, is_compact=shared.opts.compact_prompt_box)
 
+        # ResizeHandleRow expects its first and last children to be the two columns.
+        interrogate_clip_run = gr.Button(visible=False, elem_id="img2img_interrogate_clip_run")
+        interrogate_deepbooru_run = gr.Button(visible=False, elem_id="img2img_interrogate_deepbooru_run")
+
         extra_tabs = gr.Tabs(elem_id="img2img_extra_tabs", elem_classes=["extra-networks"])
         extra_tabs.__enter__()
 
@@ -869,9 +873,6 @@ def create_ui():
                 ],
                 show_progress=False,
             )
-
-            interrogate_clip_run = gr.Button(visible=False, elem_id="img2img_interrogate_clip_run")
-            interrogate_deepbooru_run = gr.Button(visible=False, elem_id="img2img_interrogate_deepbooru_run")
 
             interrogate_clip_run.click(
                 fn=lambda *args: process_interrogate(interrogate, *args),
